@@ -25,19 +25,19 @@ This project follows **Clean Architecture** principles with a **Feature-Based St
 
 ```
 src/
-├── app/              # Application-wide setup
-│   ├── store/        # Redux store configuration
-│   ├── router/       # Routing setup
-│   └── providers/    # React providers
-├── core/             # Core utilities and infrastructure
-│   ├── api/          # API client setup
-│   ├── constants/    # App constants
-│   ├── hooks/        # Custom hooks
-│   ├── utils/        # Utility functions
-│   └── types/        # Shared types
-├── features/         # Feature modules
-│   └── blog/         # Blog feature
-│       ├── api/      # API calls
+├── app/              
+│   ├── store/        
+│   ├── router/       
+│   └── providers/    
+├── core/             
+│   ├── api/          
+│   ├── constants/    
+│   ├── hooks/        
+│   ├── utils/       
+│   └── types/       
+├── features/      
+│   └── blog/         
+│       ├── api/     
 │       ├── components/
 │       ├── pages/
 │       ├── hooks/
@@ -45,12 +45,12 @@ src/
 │       ├── store/
 │       ├── schemas/
 │       └── types/
-├── shared/           # Shared components and utilities
+├── shared/           
 │   ├── components/
 │   ├── layouts/
-│   ├── ui/           # Reusable UI components
+│   ├── ui/         
 │   └── assets/
-└── mocks/            # MSW mock setup
+└── mocks/          
     ├── handlers/
     └── data/
 ```
