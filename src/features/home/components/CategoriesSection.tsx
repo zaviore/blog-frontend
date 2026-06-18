@@ -15,7 +15,7 @@ export const CategoriesSection = () => {
       <div className="flex flex-wrap gap-2">
         {CATEGORIES.map((category) => (
           <Link key={category} to={`/blog?category=${category}`}>
-            <Badge variant="outline" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <Badge variant={category} className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               {category}
             </Badge>
           </Link>

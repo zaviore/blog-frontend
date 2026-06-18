@@ -44,7 +44,7 @@ export const careerData: CareerExperience[] = [
     id: '3',
     title: 'Freelance Software Engineer',
     company: 'Freelance',
-    companyLogo: './image.webp',
+    companyLogo: './freelance.png',
     startDate: 'June 2023',
     endDate: 'December 2023',
     techStack: ['Javascript/Typescript', 'NextJS', 'Tailwind', 'Hygraph', 'GraphQL', 'Node.js'],

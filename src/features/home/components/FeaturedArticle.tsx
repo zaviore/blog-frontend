@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Card } from '@/shared/ui/Card'
 import { Button } from '@/shared/ui/Button'
-import type { Blog } from '../types'
+import type { Blog } from '@/features/blog/types'
 
 interface FeaturedArticleProps {
   blog: Blog

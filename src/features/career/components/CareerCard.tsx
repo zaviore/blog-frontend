@@ -22,7 +22,7 @@ export const CareerCard = ({ experience }: CareerCardProps) => {
     <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col">
       <div className="p-6 flex flex-col flex-1">
         <div className="mb-4">
-          <div className="aspect-video bg-white dark:bg-gray-800 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
+          <div className="aspect-video border border-gray-200 p-5 bg-white dark:bg-gray-800 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
             {experience.companyLogo ? (
               <img
                 src={experience.companyLogo}
@@ -52,7 +52,7 @@ export const CareerCard = ({ experience }: CareerCardProps) => {
           </div>
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 ">
           <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-wider">
             Job Detail
           </h4>

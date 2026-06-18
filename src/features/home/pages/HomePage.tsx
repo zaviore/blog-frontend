@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Button } from '@/shared/ui/Button'
-import { Card } from '@/shared/ui/Card'
-import { useBlogsInfinite } from '../hooks/useBlogs'
+import { TypingEffect } from '@/shared/components/TypingEffect'
+import { useBlogsInfinite } from '@/features/blog/hooks/useBlogs'
 import { FeaturedArticle } from '../components/FeaturedArticle'
-import { FeaturedArticleCard } from '../components/FeaturedArticleCard'
 import { TrendingPosts } from '../components/TrendingPosts'
 import { CategoriesSection } from '../components/CategoriesSection'
+import { FeaturedArticleCard } from '../components/FeaturedArticleCard'
+import { TechStackCarousel } from '../components/TechStackCarousel'
 
 
 const techStack = [
@@ -15,6 +16,11 @@ const techStack = [
   { name: 'TanStack Query', icon: '/tanstack.png' },
   { name: 'Tailwind CSS', icon: '/tailwind.png' },
   { name: 'Vite', icon: '/vite.png' },
+  { name: 'Docker', icon: '/docker.webp' },
+  { name: 'Next', icon: '/vite.png' },
+  { name: 'MySQL', icon: '/mysql.png' },
+  { name: 'PostgreSQL', icon: '/postgree.png' },
+
 ]
 
 export const HomePage = () => {
@@ -25,11 +31,16 @@ export const HomePage = () => {
   return (
     <div className="min-h-screen">
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Hi, I'm <span className="text-primary-600 dark:text-primary-400">Zamhadi</span>
+        <div className="max-w-6xl mx-auto ">
+        <div className='flex justify-around items-center'> 
+        <img src="/zam-photo.jpeg" alt="Profile" className="w-64 h-64 rounded-full mb-6" />
+        <div className='max-w-2xl'>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+            Hi, I'm <span className="text-primary-600 dark:text-primary-400">
+              <TypingEffect text="Zamhadi" />
+            </span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-md text-gray-600 dark:text-gray-400 mb-8">
             i'm Software Engineer, My job is Develop, improve, maintain, and publish high quality
             user-facing web. To Ensure apps that develop are cross-device compatible, adhere to our
             company-wide style guide, and matches the designed user experience and Doing test driven
@@ -40,6 +51,9 @@ export const HomePage = () => {
             create scalable and maintainable applications that make a real difference in users'
             lives.
           </p>
+        </div>
+       </div>
+           
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/blog">
               <Button size="lg">View Blog</Button>
@@ -58,14 +72,7 @@ export const HomePage = () => {
           <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
             Tech Stack
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {techStack.map((tech) => (
-              <Card key={tech.name} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <img src={tech.icon} alt={tech.name} className="w-16 h-16 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-900 dark:text-white">{tech.name}</h3>
-              </Card>
-            ))}
-          </div>
+          <TechStackCarousel techStack={techStack} />
         </div>
       </section>
 

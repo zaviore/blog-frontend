@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Card } from '@/shared/ui/Card'
 import { Badge } from '@/shared/ui/Badge'
 import { formatDate, truncateText } from '@/core/utils'
-import type { Blog } from '../types'
+import type { Blog } from '@/features/blog/types'
 
 interface FeaturedArticleCardProps {
   blog: Blog

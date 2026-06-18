@@ -1,6 +1,6 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom'
 import { MainLayout } from '@/shared/layouts/MainLayout'
-import { HomePage } from '@/features/blog/pages/HomePage'
+import { HomePage } from '@/features/home/pages/HomePage'
 import { BlogListPage } from '@/features/blog/pages/BlogListPage'
 import { BlogDetailPage } from '@/features/blog/pages/BlogDetailPage'
 import { CreateBlogPage } from '@/features/blog/pages/CreateBlogPage'
