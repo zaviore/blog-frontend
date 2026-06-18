@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom'
 import { Button } from '@/shared/ui/Button'
 import { Card } from '@/shared/ui/Card'
-import { Badge } from '@/shared/ui/Badge'
-import { formatDate, truncateText } from '@/core/utils'
 import { useBlogsInfinite } from '../hooks/useBlogs'
-import { BlogCardSkeleton } from '../components/BlogCardSkeleton'
+import { FeaturedArticle } from '../components/FeaturedArticle'
+import { FeaturedArticleCard } from '../components/FeaturedArticleCard'
+import { TrendingPosts } from '../components/TrendingPosts'
+import { CategoriesSection } from '../components/CategoriesSection'
+
 
 const techStack = [
-  { name: 'React', icon: '⚛️' },
-  { name: 'TypeScript', icon: '📘' },
-  { name: 'Redux', icon: '🔴' },
-  { name: 'TanStack Query', icon: '🔷' },
-  { name: 'Tailwind CSS', icon: '🎨' },
-  { name: 'Vite', icon: '⚡' }
+  { name: 'React', icon: '/react.png' },
+  { name: 'TypeScript', icon: '/typescript.png' },
+  { name: 'Redux', icon: '/redux.png' },
+  { name: 'TanStack Query', icon: '/tanstack.png' },
+  { name: 'Tailwind CSS', icon: '/tailwind.png' },
+  { name: 'Vite', icon: '/vite.png' },
 ]
 
 export const HomePage = () => {
@@ -25,18 +27,27 @@ export const HomePage = () => {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Hi, I'm <span className="text-primary-600 dark:text-primary-400">DevPortfolio</span>
+            Hi, I'm <span className="text-primary-600 dark:text-primary-400">Zamhadi</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-            Full-stack developer passionate about building beautiful, performant web applications.
-            Sharing my knowledge through blog posts and tutorials.
+            i'm Software Engineer, My job is Develop, improve, maintain, and publish high quality
+            user-facing web. To Ensure apps that develop are cross-device compatible, adhere to our
+            company-wide style guide, and matches the designed user experience and Doing test driven
+            development. As a technology enthusiast, I thrive on building dynamic user interfaces
+            and robust frontend architectures. My expertise lies in TypeScript, React, Node.js and
+            Next.js, and I'm always excited to explore new frameworks and design patterns that push
+            the boundaries of web development. I believe in the power of clean, modular code to
+            create scalable and maintainable applications that make a real difference in users'
+            lives.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/blog">
               <Button size="lg">View Blog</Button>
             </Link>
             <Link to="/blog/create">
-              <Button variant="outline" size="lg">Write Post</Button>
+              <Button variant="outline" size="lg">
+                Write Post
+              </Button>
             </Link>
           </div>
         </div>
@@ -50,7 +61,7 @@ export const HomePage = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {techStack.map((tech) => (
               <Card key={tech.name} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="text-4xl mb-3">{tech.icon}</div>
+                <img src={tech.icon} alt={tech.name} className="w-16 h-16 mx-auto mb-3" />
                 <h3 className="font-semibold text-gray-900 dark:text-white">{tech.name}</h3>
               </Card>
             ))}
@@ -59,63 +70,40 @@ export const HomePage = () => {
       </section>
 
       <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Featured Posts
-            </h2>
-            <Link to="/blog">
-              <Button variant="outline">View All</Button>
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              {isLoading ? (
+                <>
+                  <div className="aspect-video rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="aspect-video rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+                    <div className="aspect-video rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  {featuredBlogs[0] && <FeaturedArticle blog={featuredBlogs[0]} />}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {featuredBlogs.slice(1, 3).map((blog) => (
+                      <FeaturedArticleCard key={blog.id} blog={blog} />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <BlogCardSkeleton />
-              <BlogCardSkeleton />
-              <BlogCardSkeleton />
-              <BlogCardSkeleton />
+            <div className="space-y-6">
+              {!isLoading && <TrendingPosts blogs={featuredBlogs} />}
+              <CategoriesSection />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {featuredBlogs.map((blog) => (
-                <Link key={blog.id} to={`/blog/${blog.id}`}>
-                  <Card className="group hover:shadow-lg transition-shadow overflow-hidden">
-                    <div className="relative aspect-video overflow-hidden">
-                      <img
-                        src={blog.thumbnail}
-                        alt={blog.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <Badge variant={blog.category}>{blog.category}</Badge>
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
-                        {blog.title}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                        {truncateText(blog.excerpt, 120)}
-                      </p>
-                      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-500">
-                        <span className="font-medium">{blog.author}</span>
-                        <span>{formatDate(blog.createdAt)}</span>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          )}
+          </div>
         </div>
       </section>
 
       <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900/50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-            Get in Touch
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Get in Touch</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
             Have a project in mind or just want to say hello? I'd love to hear from you!
           </p>

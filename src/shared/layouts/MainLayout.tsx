@@ -24,7 +24,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/blog', label: 'Blog' }
+    { path: '/blog', label: 'Blog' },
+    { path: '/career-journey', label: 'Career' }
   ]
 
   return (
@@ -33,7 +34,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">
-              DevPortfolio
+              Portopolio
             </Link>
 
             <nav className="hidden md:flex items-center gap-8">

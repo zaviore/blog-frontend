@@ -4,6 +4,7 @@ import { HomePage } from '@/features/blog/pages/HomePage'
 import { BlogListPage } from '@/features/blog/pages/BlogListPage'
 import { BlogDetailPage } from '@/features/blog/pages/BlogDetailPage'
 import { CreateBlogPage } from '@/features/blog/pages/CreateBlogPage'
+import { CareerJourneyPage } from '@/features/career/pages/CareerJourneyPage'
 
 const LayoutWithOutlet = () => {
   return (
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: '/blog/:id/edit',
         element: <CreateBlogPage />
+      },
+      {
+        path: '/career-journey',
+        element: <CareerJourneyPage />
       }
     ]
   }
