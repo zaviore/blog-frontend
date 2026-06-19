@@ -1,18 +1,27 @@
-import { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/core/hooks'
 import { toggleTheme } from '@/app/store/themeSlice'
 import type { RootState } from '@/app/store'
+import { Button } from '@/shared/ui/Button'
 import ToastContainer from '@/shared/ui/Toast'
 
 interface MainLayoutProps {
   children: React.ReactNode
 }
 
+interface User {
+  id: string
+  name: string
+  email: string
+}
+
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const theme = useAppSelector((state: RootState) => state.theme.mode)
   const location = useLocation()
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -21,6 +30,19 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       document.documentElement.classList.remove('dark')
     }
   }, [theme])
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    setUser(null)
+    navigate('/')
+  }
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -54,6 +76,30 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </nav>
 
             <div className="flex items-center gap-4">
+              {user ? (
+                <div className="flex items-center gap-4">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Hi, {user.name}
+                  </span>
+                  <Button variant="outline" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link to="/login">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
+
               <button
                 onClick={() => dispatch(toggleTheme())}
                 className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"

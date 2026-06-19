@@ -5,6 +5,8 @@ import { BlogListPage } from '@/features/blog/pages/BlogListPage'
 import { BlogDetailPage } from '@/features/blog/pages/BlogDetailPage'
 import { CreateBlogPage } from '@/features/blog/pages/CreateBlogPage'
 import { CareerJourneyPage } from '@/features/career/pages/CareerJourneyPage'
+import { LoginPage } from '@/features/auth/pages/LoginPage'
+import { RegisterPage } from '@/features/auth/pages/RegisterPage'
 
 const LayoutWithOutlet = () => {
   return (
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
       {
         path: '/career-journey',
         element: <CareerJourneyPage />
+      },
+      {
+        path: '/login',
+        element: <LoginPage />
+      },
+      {
+        path: '/register',
+        element: <RegisterPage />
       }
     ]
   }
