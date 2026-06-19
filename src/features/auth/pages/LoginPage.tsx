@@ -7,8 +7,8 @@ import { LoginCredentials } from '../types'
 import { loginSchema } from '../schemas'
 
 interface ValidationErrors {
-  email?: string
-  password?: string
+  email: string
+  password: string
 }
 
 export const LoginPage = () => {
