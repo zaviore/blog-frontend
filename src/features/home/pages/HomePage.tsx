@@ -32,7 +32,7 @@ export const HomePage = () => {
     <div className="min-h-screen">
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto ">
-        <div className='flex justify-around items-center'> 
+        <div className='flex-col md:flex-row flex justify-around items-center text-center md:text-left'> 
         <img src="/zam-photo.jpeg" alt="Profile" className="w-64 h-64 rounded-full mb-6" />
         <div className='max-w-2xl'>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
