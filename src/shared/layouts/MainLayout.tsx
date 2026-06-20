@@ -1,5 +1,8 @@
+'use client'
+
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from '@/core/hooks'
 import { toggleTheme } from '@/app/store/themeSlice'
 import type { RootState } from '@/app/store'
@@ -18,9 +21,9 @@ interface User {
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const router = useRouter()
   const theme = useAppSelector((state: RootState) => state.theme.mode)
-  const location = useLocation()
+  const pathname = usePathname()
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const handleLogout = () => {
     localStorage.removeItem('user')
     setUser(null)
-    navigate('/')
+    router.push('/')
   }
 
   const navLinks = [
@@ -55,7 +58,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">
+            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
               Portopolio
             </Link>
 
@@ -63,9 +66,9 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
-                  to={link.path}
+                  href={link.path}
                   className={`text-sm font-medium transition-colors ${
-                    location.pathname === link.path
+                    pathname === link.path
                       ? 'text-primary-600 dark:text-primary-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400'
                   }`}
@@ -87,12 +90,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <Link to="/login">
+                  <Link href="/login">
                     <Button variant="ghost" size="sm">
                       Sign In
                     </Button>
                   </Link>
-                  <Link to="/register">
+                  <Link href="/register">
                     <Button size="sm">
                       Sign Up
                     </Button>

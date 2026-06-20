@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Card } from '@/shared/ui/Card'
 import { Input } from '@/shared/ui/Input'
 import { Button } from '@/shared/ui/Button'
@@ -14,7 +17,7 @@ interface ValidationErrors {
 }
 
 export const RegisterPage = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [formData, setFormData] = useState<RegisterCredentials>({
     name: '',
     email: '',
@@ -26,7 +29,7 @@ export const RegisterPage = () => {
   const [registerError, setRegisterError] = useState<string | null>(null)
 
   const validateField = (name: keyof RegisterCredentials, value: string, allValues?: RegisterCredentials) => {
-    const schema = registerSchema[name]
+    const schema = registerSchema[name] as any
     let error = ''
 
     if (schema.required && !value.trim()) {
@@ -85,7 +88,7 @@ export const RegisterPage = () => {
         email: formData.email
       }))
 
-      navigate('/')
+      router.push('/')
     } catch (error) {
       setRegisterError('Registration failed. Please try again.')
     } finally {
@@ -177,7 +180,7 @@ export const RegisterPage = () => {
           <p className="text-gray-600 dark:text-gray-400">
             Already have an account?{' '}
             <Link 
-              to="/login" 
+              href="/login" 
               className="text-primary-600 hover:text-primary-700 font-medium"
             >
               Sign in

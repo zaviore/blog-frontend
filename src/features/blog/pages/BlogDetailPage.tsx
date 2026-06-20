@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/shared/ui/Button'
 import { Badge } from '@/shared/ui/Badge'
 import { Skeleton } from '@/shared/ui/Skeleton'
@@ -10,10 +13,10 @@ import { BlogCard } from '../components/BlogCard'
 
 export const BlogDetailPage = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
+  const router = useRouter()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  const blogId = id ? parseInt(id) : undefined
+  const blogId = id ? parseInt(id as string) : undefined
   const { data: blog, isLoading } = useBlog(blogId)
   const { data: blogsData } = useBlogsInfinite({ limit: 5 })
   const deleteBlog = useDeleteBlog()
@@ -25,7 +28,7 @@ export const BlogDetailPage = () => {
   const handleDelete = async () => {
     if (!blogId) return
     await deleteBlog.mutateAsync(blogId)
-    navigate('/blog')
+    router.push('/blog')
   }
 
   if (isLoading) {
@@ -57,7 +60,7 @@ export const BlogDetailPage = () => {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             Blog not found
           </h1>
-          <Link to="/blog">
+          <Link href="/blog">
             <Button>Back to Blog</Button>
           </Link>
         </div>
@@ -82,7 +85,7 @@ export const BlogDetailPage = () => {
               <span>{formatDate(blog.createdAt)}</span>
             </div>
             <div className="flex gap-3">
-              <Link to={`/blog/${blog.id}/edit`}>
+              <Link href={`/blog/${blog.id}/edit`}>
                 <Button variant="outline" size="sm">Edit</Button>
               </Link>
               <Button

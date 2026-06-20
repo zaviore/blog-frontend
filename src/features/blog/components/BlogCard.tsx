@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Card } from '@/shared/ui/Card'
 import { Badge } from '@/shared/ui/Badge'
 import { formatDate, truncateText } from '@/core/utils'
@@ -10,7 +12,7 @@ interface BlogCardProps {
 
 export const BlogCard = ({ blog }: BlogCardProps) => {
   return (
-    <Link to={`/blog/${blog.id}`}>
+    <Link href={`/blog/${blog.id}`}>
       <Card className="group hover:shadow-lg transition-shadow duration-300">
         <div className="relative aspect-video overflow-hidden">
           <img

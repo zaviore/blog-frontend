@@ -1,15 +1,17 @@
-import { useNavigate, useParams } from 'react-router-dom'
+'use client'
+
+import { useRouter, useParams } from 'next/navigation'
 import { Card } from '@/shared/ui/Card'
 import { BlogForm } from '../components/BlogForm'
 import { useCreateBlog, useUpdateBlog, useBlog } from '../hooks/useBlogs'
 
 export const CreateBlogPage = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
+  const router = useRouter()
   const createBlog = useCreateBlog()
   const updateBlog = useUpdateBlog()
 
-  const blogId = id ? parseInt(id) : undefined
+  const blogId = id ? parseInt(id as string) : undefined
   const { data: blog, isLoading: isLoadingBlog } = useBlog(blogId)
   const isEdit = !!blogId
 
@@ -19,7 +21,7 @@ export const CreateBlogPage = () => {
     } else {
       await createBlog.mutateAsync(data)
     }
-    navigate('/blog')
+    router.push('/blog')
   }
 
   if (isEdit && isLoadingBlog) {

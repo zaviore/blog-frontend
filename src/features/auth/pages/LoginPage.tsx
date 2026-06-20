@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Card } from '@/shared/ui/Card'
 import { Input } from '@/shared/ui/Input'
 import { Button } from '@/shared/ui/Button'
@@ -12,17 +15,20 @@ interface ValidationErrors {
 }
 
 export const LoginPage = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [formData, setFormData] = useState<LoginCredentials>({
     email: '',
     password: ''
   })
-  const [errors, setErrors] = useState<ValidationErrors>({})
+  const [errors, setErrors] = useState<ValidationErrors>({
+    email: '',
+    password: ''
+  })
   const [isLoading, setIsLoading] = useState(false)
   const [loginError, setLoginError] = useState<string | null>(null)
 
   const validateField = (name: keyof LoginCredentials, value: string) => {
-    const schema = loginSchema[name]
+    const schema = loginSchema[name] as any
     let error = ''
 
     if (schema.required && !value.trim()) {
@@ -49,7 +55,10 @@ export const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    const newErrors: ValidationErrors = {}
+    const newErrors: ValidationErrors = {
+      email: '',
+      password: ''
+    }
     Object.keys(formData).forEach(key => {
       const error = validateField(key as keyof LoginCredentials, formData[key as keyof LoginCredentials])
       if (error) {
@@ -76,7 +85,7 @@ export const LoginPage = () => {
         email: formData.email
       }))
 
-      navigate('/')
+      router.push('/')
     } catch (error) {
       setLoginError('Invalid email or password')
     } finally {
@@ -140,7 +149,7 @@ export const LoginPage = () => {
           <p className="text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
             <Link 
-              to="/register" 
+              href="/register" 
               className="text-primary-600 hover:text-primary-700 font-medium"
             >
               Sign up

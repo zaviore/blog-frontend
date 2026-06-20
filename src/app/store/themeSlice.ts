@@ -7,6 +7,7 @@ interface ThemeState {
 }
 
 const getInitialTheme = (): ThemeMode => {
+  if (typeof window === 'undefined') return 'light'
   const saved = localStorage.getItem('theme')
   if (saved === 'light' || saved === 'dark') return saved
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -22,11 +23,15 @@ const themeSlice = createSlice({
   reducers: {
     toggleTheme: (state) => {
       state.mode = state.mode === 'light' ? 'dark' : 'light'
-      localStorage.setItem('theme', state.mode)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', state.mode)
+      }
     },
     setTheme: (state, action: PayloadAction<ThemeMode>) => {
       state.mode = action.payload
-      localStorage.setItem('theme', state.mode)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', state.mode)
+      }
     }
   }
 })

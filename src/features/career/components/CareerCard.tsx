@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { Card } from '@/shared/ui/Card'
 import { Badge } from '@/shared/ui/Badge'

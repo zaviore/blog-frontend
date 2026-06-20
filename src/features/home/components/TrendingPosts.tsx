@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Card } from '@/shared/ui/Card'
 import type { Blog } from '@/features/blog/types'
 
@@ -17,7 +19,7 @@ export const TrendingPosts = ({ blogs }: TrendingPostsProps) => {
       </div>
       <div className="space-y-4">
         {blogs.slice(0, 3).map((blog, index) => (
-          <Link key={blog.id} to={`/blog/${blog.id}`} className="flex gap-4 group">
+          <Link key={blog.id} href={`/blog/${blog.id}`} className="flex gap-4 group">
             <span className="text-3xl font-bold text-emerald-500">{String(index + 1).padStart(2, '0')}</span>
             <div className="flex-1">
               <h4 className="font-medium text-gray-900 dark:text-white group-hover:text-emerald-500 transition-colors line-clamp-2">

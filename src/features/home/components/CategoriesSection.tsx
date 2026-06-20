@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Card } from '@/shared/ui/Card'
 import { Badge } from '@/shared/ui/Badge'
 import { CATEGORIES } from '@/core/constants'
@@ -14,7 +16,7 @@ export const CategoriesSection = () => {
       </div>
       <div className="flex flex-wrap gap-2">
         {CATEGORIES.map((category) => (
-          <Link key={category} to={`/blog?category=${category}`}>
+          <Link key={category} href={`/blog?category=${category}`}>
             <Badge variant={category} className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               {category}
             </Badge>

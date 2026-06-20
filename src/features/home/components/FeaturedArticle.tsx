@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Card } from '@/shared/ui/Card'
 import { Button } from '@/shared/ui/Button'
 import type { Blog } from '@/features/blog/types'
@@ -9,7 +11,7 @@ interface FeaturedArticleProps {
 
 export const FeaturedArticle = ({ blog }: FeaturedArticleProps) => {
   return (
-    <Link to={`/blog/${blog.id}`}>
+    <Link href={`/blog/${blog.id}`}>
       <Card className="group hover:shadow-lg transition-shadow overflow-hidden">
         <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600">
           <img

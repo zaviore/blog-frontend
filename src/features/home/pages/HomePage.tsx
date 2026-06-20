@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Button } from '@/shared/ui/Button'
 import { TypingEffect } from '@/shared/components/TypingEffect'
 import { useBlogsInfinite } from '@/features/blog/hooks/useBlogs'
@@ -55,10 +57,10 @@ export const HomePage = () => {
        </div>
            
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/blog">
+            <Link href="/blog">
               <Button size="lg">View Blog</Button>
             </Link>
-            <Link to="/blog/create">
+            <Link href="/blog/create">
               <Button variant="outline" size="lg">
                 Write Post
               </Button>

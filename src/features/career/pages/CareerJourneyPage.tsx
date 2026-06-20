@@ -1,3 +1,5 @@
+'use client'
+
 import { CareerCard } from '../components/CareerCard'
 import { careerData } from '../data'
 
