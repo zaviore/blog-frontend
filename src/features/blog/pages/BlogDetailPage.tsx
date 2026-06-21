@@ -10,20 +10,32 @@ import { ConfirmModal } from '@/shared/ui/Modal'
 import { formatDate } from '@/core/utils'
 import { useBlog, useBlogsInfinite, useDeleteBlog } from '../hooks/useBlogs'
 import { BlogCard } from '../components/BlogCard'
+import type { Blog } from '../types'
 
-export const BlogDetailPage = () => {
-  const { id } = useParams()
+interface BlogDetailPageProps {
+  blogId?: number
+  initialBlog?: Blog
+  initialRelatedPosts?: Blog[]
+}
+
+export const BlogDetailPage = ({
+  blogId: initialBlogId,
+  initialBlog,
+  initialRelatedPosts = []
+}: BlogDetailPageProps) => {
+  const params = useParams()
   const router = useRouter()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  const blogId = id ? parseInt(id as string) : undefined
-  const { data: blog, isLoading } = useBlog(blogId)
+  const routeId = params?.id ? parseInt(params.id as string) : undefined
+  const blogId = initialBlogId ?? routeId
+  const { data: blog, isLoading } = useBlog(blogId, initialBlog)
   const { data: blogsData } = useBlogsInfinite({ limit: 5 })
   const deleteBlog = useDeleteBlog()
 
   const relatedPosts = blogsData?.pages[0]?.data.filter(
     (b) => b.id !== blogId && b.category === blog?.category
-  ).slice(0, 3) || []
+  ).slice(0, 3) || initialRelatedPosts
 
   const handleDelete = async () => {
     if (!blogId) return

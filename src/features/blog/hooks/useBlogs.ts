@@ -2,6 +2,7 @@ import { useInfiniteQuery, useQuery, useMutation, useQueryClient } from '@tansta
 import { blogService, type GetBlogsParams } from '../services'
 import { useAppDispatch } from '@/core/hooks'
 import { addNotification } from '@/app/store/notificationSlice'
+import type { Blog, UpdateBlogDto } from '../types'
 
 export const useBlogsInfinite = (params: Omit<GetBlogsParams, 'page'> = {}) => {
   return useInfiniteQuery({
@@ -18,7 +19,7 @@ export const useBlogsInfinite = (params: Omit<GetBlogsParams, 'page'> = {}) => {
   })
 }
 
-export const useBlog = (id: number | undefined) => {
+export const useBlog = (id: number | undefined, initialBlog?: Blog) => {
   return useQuery({
     queryKey: ['blog', id],
     queryFn: async () => {
@@ -27,6 +28,7 @@ export const useBlog = (id: number | undefined) => {
       return response.data
     },
     enabled: !!id,
+    initialData: initialBlog,
     staleTime: 10 * 60 * 1000
   })
 }
@@ -52,7 +54,7 @@ export const useUpdateBlog = () => {
   const dispatch = useAppDispatch()
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: any }) =>
+    mutationFn: ({ id, data }: { id: number; data: UpdateBlogDto }) =>
       blogService.updateBlog(id, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['blogs'] })

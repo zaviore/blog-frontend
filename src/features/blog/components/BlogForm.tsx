@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm } from '@tanstack/react-form'
 import { Button } from '@/shared/ui/Button'
 import { Input } from '@/shared/ui/Input'
@@ -20,6 +21,10 @@ export const BlogForm = ({
   isLoading = false,
   submitText = 'Create Blog'
 }: BlogFormProps) => {
+  const [articlePrompt, setArticlePrompt] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [generatorError, setGeneratorError] = useState<string | null>(null)
+
   const form = useForm<CreateBlogDto>({
     defaultValues: {
       title: initialData?.title || '',
@@ -33,6 +38,45 @@ export const BlogForm = ({
       onSubmit(value)
     }
   })
+
+  const handleGenerateArticle = async () => {
+    if (!articlePrompt.trim()) {
+      setGeneratorError('Please enter a prompt first.')
+      return
+    }
+
+    setIsGenerating(true)
+    setGeneratorError(null)
+
+    try {
+      const response = await fetch('/api/generate-article', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt: articlePrompt,
+          title: form.state.values.title,
+          category: form.state.values.category
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate article')
+      }
+
+      const data = await response.json()
+      form.setFieldValue('content', data.content)
+
+      if (!form.state.values.excerpt) {
+        form.setFieldValue('excerpt', data.excerpt)
+      }
+    } catch {
+      setGeneratorError('Article generator is unavailable. Please try again.')
+    } finally {
+      setIsGenerating(false)
+    }
+  }
 
   return (
     <form
@@ -170,6 +214,36 @@ export const BlogForm = ({
           </div>
         )}
       />
+
+      <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            AI Article Prompt
+          </label>
+          <Textarea
+            value={articlePrompt}
+            onChange={(e) => setArticlePrompt(e.target.value)}
+            placeholder="Example: Write an article about how ISR works in Next.js for beginner frontend developers"
+            rows={4}
+          />
+        </div>
+
+        {generatorError && (
+          <p className="text-sm text-red-600 dark:text-red-400">
+            {generatorError}
+          </p>
+        )}
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleGenerateArticle}
+          isLoading={isGenerating}
+          disabled={isGenerating}
+        >
+          Generate Content
+        </Button>
+      </div>
 
       <form.Field
         name="content"

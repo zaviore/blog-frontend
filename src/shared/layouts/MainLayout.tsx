@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from '@/core/hooks'
 import { toggleTheme } from '@/app/store/themeSlice'
+import { initializeAuth, logout } from '@/app/store/authSlice'
 import type { RootState } from '@/app/store'
 import { Button } from '@/shared/ui/Button'
 import ToastContainer from '@/shared/ui/Toast'
@@ -13,18 +14,13 @@ interface MainLayoutProps {
   children: React.ReactNode
 }
 
-interface User {
-  id: string
-  name: string
-  email: string
-}
-
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const theme = useAppSelector((state: RootState) => state.theme.mode)
+  const user = useAppSelector((state: RootState) => state.auth.user)
   const pathname = usePathname()
-  const [user, setUser] = useState<User | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -35,15 +31,14 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   }, [theme])
 
   useEffect(() => {
+    setIsMounted(true)
     const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-  }, [])
+    dispatch(initializeAuth(storedUser ? JSON.parse(storedUser) : null))
+  }, [dispatch])
 
   const handleLogout = () => {
     localStorage.removeItem('user')
-    setUser(null)
+    dispatch(logout())
     router.push('/')
   }
 
@@ -79,7 +74,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </nav>
 
             <div className="flex items-center gap-4">
-              {user ? (
+              {isMounted && user ? (
                 <div className="flex items-center gap-4">
                   <span className="text-sm text-gray-600 dark:text-gray-400">
                     Hi, {user.name}
@@ -88,7 +83,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     Logout
                   </Button>
                 </div>
-              ) : (
+              ) : isMounted ? (
                 <div className="flex items-center gap-3">
                   <Link href="/login">
                     <Button variant="ghost" size="sm">
@@ -101,7 +96,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     </Button>
                   </Link>
                 </div>
-              )}
+              ) : null}
 
               <button
                 onClick={() => dispatch(toggleTheme())}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/shared/ui/Card'
@@ -8,6 +8,9 @@ import { Input } from '@/shared/ui/Input'
 import { Button } from '@/shared/ui/Button'
 import { LoginCredentials } from '../types'
 import { loginSchema } from '../schemas'
+import { useAppDispatch, useAppSelector } from '@/core/hooks'
+import { login } from '@/app/store/authSlice'
+import type { RootState } from '@/app/store'
 
 interface ValidationErrors {
   email: string
@@ -16,6 +19,8 @@ interface ValidationErrors {
 
 export const LoginPage = () => {
   const router = useRouter()
+  const dispatch = useAppDispatch()
+  const isAuthenticated = useAppSelector((state: RootState) => state.auth.isAuthenticated)
   const [formData, setFormData] = useState<LoginCredentials>({
     email: '',
     password: ''
@@ -26,6 +31,12 @@ export const LoginPage = () => {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [loginError, setLoginError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace('/')
+    }
+  }, [isAuthenticated, router])
 
   const validateField = (name: keyof LoginCredentials, value: string) => {
     const schema = loginSchema[name] as any
@@ -66,7 +77,7 @@ export const LoginPage = () => {
       }
     })
 
-    if (Object.keys(newErrors).length > 0) {
+    if (Object.values(newErrors).some(Boolean)) {
       setErrors(newErrors)
       return
     }
@@ -79,11 +90,14 @@ export const LoginPage = () => {
       await new Promise(resolve => setTimeout(resolve, 1000))
       
       // Mock successful login - in real app, store token in localStorage
-      localStorage.setItem('user', JSON.stringify({
+      const user = {
         id: '1',
-        name: 'Test User',
+        name: formData.email.split('@')[0] || 'Test User',
         email: formData.email
-      }))
+      }
+
+      localStorage.setItem('user', JSON.stringify(user))
+      dispatch(login(user))
 
       router.push('/')
     } catch (error) {

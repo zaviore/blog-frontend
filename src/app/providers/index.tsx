@@ -1,24 +1,12 @@
-import { Provider as ReduxProvider } from 'react-redux'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { RouterProvider } from 'react-router-dom'
-import { store } from '../store'
-import { router } from '../router'
+'use client'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1
-    }
-  }
-})
+import { ReduxProvider } from '@/lib/redux/provider'
+import { Providers } from '@/lib/providers'
 
-export function AppProviders() {
+export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <ReduxProvider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+    <ReduxProvider>
+      <Providers>{children}</Providers>
     </ReduxProvider>
   )
 }

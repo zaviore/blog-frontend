@@ -1,13 +1,18 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { Card } from '@/shared/ui/Card'
 import { BlogForm } from '../components/BlogForm'
 import { useCreateBlog, useUpdateBlog, useBlog } from '../hooks/useBlogs'
+import { useAppSelector } from '@/core/hooks'
+import type { RootState } from '@/app/store'
+import type { CreateBlogDto } from '../types'
 
 export const CreateBlogPage = () => {
   const { id } = useParams()
   const router = useRouter()
+  const { isAuthenticated, isInitialized } = useAppSelector((state: RootState) => state.auth)
   const createBlog = useCreateBlog()
   const updateBlog = useUpdateBlog()
 
@@ -15,7 +20,13 @@ export const CreateBlogPage = () => {
   const { data: blog, isLoading: isLoadingBlog } = useBlog(blogId)
   const isEdit = !!blogId
 
-  const handleSubmit = async (data: any) => {
+  useEffect(() => {
+    if (isInitialized && !isAuthenticated) {
+      router.replace('/login')
+    }
+  }, [isAuthenticated, isInitialized, router])
+
+  const handleSubmit = async (data: CreateBlogDto) => {
     if (isEdit && blogId) {
       await updateBlog.mutateAsync({ id: blogId, data })
     } else {
@@ -24,7 +35,7 @@ export const CreateBlogPage = () => {
     router.push('/blog')
   }
 
-  if (isEdit && isLoadingBlog) {
+  if (!isInitialized || !isAuthenticated || (isEdit && isLoadingBlog)) {
     return (
       <div className="min-h-screen py-12 px-4 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600" />

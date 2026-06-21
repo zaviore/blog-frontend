@@ -3,7 +3,7 @@ import { CATEGORIES } from '@/core/constants'
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode
-  variant?: (typeof CATEGORIES)[number] | 'default'
+  variant?: (typeof CATEGORIES)[number] | 'default' | 'outline'
 }
 
 const categoryColors: Record<string, string> = {
@@ -15,7 +15,8 @@ const categoryColors: Record<string, string> = {
   Design: 'bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-400',
   Career: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400',
   Other: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-  default: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+  default: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+  outline: 'border border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300'
 }
 
 export const Badge = ({ className, children, variant = 'default', ...props }: BadgeProps) => {
