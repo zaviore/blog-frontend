@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useForm } from '@tanstack/react-form'
 import { Button } from '@/shared/ui/Button'
 import { Input } from '@/shared/ui/Input'
@@ -7,6 +8,16 @@ import { Select } from '@/shared/ui/Select'
 import { CATEGORIES } from '@/core/constants'
 import { blogFormSchema } from '../schemas'
 import type { CreateBlogDto } from '../types'
+
+const ArticleMarkdownEditor = dynamic(
+  () => import('./ArticleMarkdownEditor').then((module) => module.ArticleMarkdownEditor),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-[360px] rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-900" />
+    ),
+  }
+)
 
 interface BlogFormProps {
   initialData?: Partial<CreateBlogDto>
@@ -19,7 +30,7 @@ export const BlogForm = ({
   initialData,
   onSubmit,
   isLoading = false,
-  submitText = 'Create Blog'
+  submitText = 'Create Blog',
 }: BlogFormProps) => {
   const [articlePrompt, setArticlePrompt] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -32,11 +43,11 @@ export const BlogForm = ({
       content: initialData?.content || '',
       category: initialData?.category || 'Frontend',
       author: initialData?.author || '',
-      thumbnail: initialData?.thumbnail || 'https://picsum.photos/seed/default/800/400'
+      thumbnail: initialData?.thumbnail || 'https://picsum.photos/seed/default/800/400',
     },
     onSubmit: async ({ value }) => {
       onSubmit(value)
-    }
+    },
   })
 
   const handleGenerateArticle = async () => {
@@ -52,13 +63,13 @@ export const BlogForm = ({
       const response = await fetch('/api/generate-article', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           prompt: articlePrompt,
           title: form.state.values.title,
-          category: form.state.values.category
-        })
+          category: form.state.values.category,
+        }),
       })
 
       if (!response.ok) {
@@ -93,7 +104,7 @@ export const BlogForm = ({
           onChange: ({ value }) => {
             if (!value) return blogFormSchema.title.required
             if (value.length < 5) return blogFormSchema.title.minLength.message
-          }
+          },
         }}
         children={(field) => (
           <div>
@@ -117,7 +128,7 @@ export const BlogForm = ({
           validators={{
             onChange: ({ value }) => {
               if (!value) return blogFormSchema.category.required
-            }
+            },
           }}
           children={(field) => (
             <div>
@@ -126,7 +137,7 @@ export const BlogForm = ({
               </label>
               <Select
                 value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value as any)}
+                onChange={(e) => field.handleChange(e.target.value as CreateBlogDto['category'])}
                 onBlur={field.handleBlur}
                 error={field.state.meta.errors.join(', ')}
               >
@@ -145,7 +156,7 @@ export const BlogForm = ({
           validators={{
             onChange: ({ value }) => {
               if (!value) return blogFormSchema.author.required
-            }
+            },
           }}
           children={(field) => (
             <div>
@@ -169,7 +180,7 @@ export const BlogForm = ({
         validators={{
           onChange: ({ value }) => {
             if (!value) return blogFormSchema.thumbnail.required
-          }
+          },
         }}
         children={(field) => (
           <div>
@@ -193,15 +204,13 @@ export const BlogForm = ({
           onChange: ({ value }) => {
             if (!value) return blogFormSchema.excerpt.required
             if (value.length > 200) return blogFormSchema.excerpt.maxLength.message
-          }
+          },
         }}
         children={(field) => (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Excerpt
-              <span className="text-gray-400 ml-1">
-                ({field.state.value.length}/200)
-              </span>
+              <span className="text-gray-400 ml-1">({field.state.value.length}/200)</span>
             </label>
             <Textarea
               value={field.state.value}
@@ -229,9 +238,7 @@ export const BlogForm = ({
         </div>
 
         {generatorError && (
-          <p className="text-sm text-red-600 dark:text-red-400">
-            {generatorError}
-          </p>
+          <p className="text-sm text-red-600 dark:text-red-400">{generatorError}</p>
         )}
 
         <Button
@@ -251,21 +258,33 @@ export const BlogForm = ({
           onChange: ({ value }) => {
             if (!value) return blogFormSchema.content.required
             if (value.length < 50) return blogFormSchema.content.minLength.message
-          }
+          },
         }}
         children={(field) => (
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Content
-            </label>
-            <Textarea
-              value={field.state.value}
-              onChange={(e) => field.handleChange(e.target.value)}
+            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 dark:text-white">
+                  Konten artikel
+                </label>
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  Tulis secara visual atau pindah ke mode Markdown melalui toolbar.
+                </p>
+              </div>
+              <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                Draft tersimpan otomatis
+              </span>
+            </div>
+            <ArticleMarkdownEditor
+              markdown={field.state.value}
+              onChange={field.handleChange}
               onBlur={field.handleBlur}
-              error={field.state.meta.errors.join(', ')}
-              placeholder="Enter blog content"
-              rows={10}
             />
+            {field.state.meta.errors.length > 0 && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                {field.state.meta.errors.join(', ')}
+              </p>
+            )}
           </div>
         )}
       />

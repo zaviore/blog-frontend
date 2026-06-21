@@ -1,7 +1,11 @@
-'use client'
+import { redirect } from 'next/navigation'
 
-import { CreateBlogPage } from '@/features/blog/pages/CreateBlogPage'
+interface PageProps {
+  params: {
+    id: string
+  }
+}
 
-export default function Page() {
-  return <CreateBlogPage />
+export default function Page({ params }: PageProps) {
+  redirect(`/admin/blog/${params.id}/edit`)
 }

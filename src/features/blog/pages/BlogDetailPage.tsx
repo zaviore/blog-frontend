@@ -1,15 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 import { Button } from '@/shared/ui/Button'
 import { Badge } from '@/shared/ui/Badge'
 import { Skeleton } from '@/shared/ui/Skeleton'
-import { ConfirmModal } from '@/shared/ui/Modal'
 import { formatDate } from '@/core/utils'
-import { useBlog, useBlogsInfinite, useDeleteBlog } from '../hooks/useBlogs'
+import { useBlog, useBlogsInfinite } from '../hooks/useBlogs'
 import { BlogCard } from '../components/BlogCard'
+import type { ReactNode } from 'react'
 import type { Blog } from '../types'
 
 interface BlogDetailPageProps {
@@ -18,30 +18,64 @@ interface BlogDetailPageProps {
   initialRelatedPosts?: Blog[]
 }
 
+const markdownComponents = {
+  h2: ({ children }: { children?: ReactNode }) => (
+    <h2 className="mt-10 mb-4 text-3xl font-bold text-gray-900 dark:text-white">{children}</h2>
+  ),
+  h3: ({ children }: { children?: ReactNode }) => (
+    <h3 className="mt-8 mb-3 text-2xl font-semibold text-gray-900 dark:text-white">{children}</h3>
+  ),
+  p: ({ children }: { children?: ReactNode }) => <p className="mb-5 leading-8">{children}</p>,
+  ul: ({ children }: { children?: ReactNode }) => (
+    <ul className="mb-6 list-disc space-y-2 pl-6">{children}</ul>
+  ),
+  ol: ({ children }: { children?: ReactNode }) => (
+    <ol className="mb-6 list-decimal space-y-2 pl-6">{children}</ol>
+  ),
+  li: ({ children }: { children?: ReactNode }) => <li className="leading-7">{children}</li>,
+  a: ({ children, href }: { children?: ReactNode; href?: string }) => (
+    <a
+      href={href}
+      className="text-primary-600 underline underline-offset-4 hover:text-primary-700 dark:text-primary-400"
+    >
+      {children}
+    </a>
+  ),
+  blockquote: ({ children }: { children?: ReactNode }) => (
+    <blockquote className="my-6 border-l-4 border-primary-500 pl-4 text-gray-600 dark:text-gray-400">
+      {children}
+    </blockquote>
+  ),
+  code: ({ children }: { children?: ReactNode }) => (
+    <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+      {children}
+    </code>
+  ),
+  pre: ({ children }: { children?: ReactNode }) => (
+    <pre className="mb-6 overflow-x-auto rounded-lg bg-gray-950 p-4 text-sm text-gray-100">
+      {children}
+    </pre>
+  ),
+}
+
 export const BlogDetailPage = ({
   blogId: initialBlogId,
   initialBlog,
-  initialRelatedPosts = []
+  initialRelatedPosts = [],
 }: BlogDetailPageProps) => {
   const params = useParams()
-  const router = useRouter()
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  const routeId = params?.id ? parseInt(params.id as string) : undefined
+  const idParam = Array.isArray(params?.id) ? params?.id[0] : params?.id
+  const parsedRouteId = idParam ? Number(idParam) : undefined
+  const routeId = Number.isFinite(parsedRouteId) ? parsedRouteId : undefined
   const blogId = initialBlogId ?? routeId
   const { data: blog, isLoading } = useBlog(blogId, initialBlog)
   const { data: blogsData } = useBlogsInfinite({ limit: 5 })
-  const deleteBlog = useDeleteBlog()
 
-  const relatedPosts = blogsData?.pages[0]?.data.filter(
-    (b) => b.id !== blogId && b.category === blog?.category
-  ).slice(0, 3) || initialRelatedPosts
-
-  const handleDelete = async () => {
-    if (!blogId) return
-    await deleteBlog.mutateAsync(blogId)
-    router.push('/blog')
-  }
+  const relatedPosts =
+    blogsData?.pages[0]?.data
+      .filter((item) => item.id !== blogId && item.category === blog?.category)
+      .slice(0, 3) || initialRelatedPosts
 
   if (isLoading) {
     return (
@@ -69,9 +103,7 @@ export const BlogDetailPage = ({
     return (
       <div className="min-h-screen py-12 px-4 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Blog not found
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Blog not found</h1>
           <Link href="/blog">
             <Button>Back to Blog</Button>
           </Link>
@@ -90,25 +122,10 @@ export const BlogDetailPage = ({
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             {blog.title}
           </h1>
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
-              <span className="font-medium text-gray-900 dark:text-white">{blog.author}</span>
-              <span>•</span>
-              <span>{formatDate(blog.createdAt)}</span>
-            </div>
-            <div className="flex gap-3">
-              <Link href={`/blog/${blog.id}/edit`}>
-                <Button variant="outline" size="sm">Edit</Button>
-              </Link>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => setShowDeleteModal(true)}
-                isLoading={deleteBlog.isPending}
-              >
-                Delete
-              </Button>
-            </div>
+          <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
+            <span className="font-medium text-gray-900 dark:text-white">{blog.author}</span>
+            <span>&bull;</span>
+            <span>{formatDate(blog.createdAt)}</span>
           </div>
         </div>
 
@@ -120,17 +137,14 @@ export const BlogDetailPage = ({
           />
         </div>
 
-        <div
-          className="prose prose-lg dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-        />
+        <div className="max-w-none text-gray-700 dark:text-gray-300">
+          <ReactMarkdown components={markdownComponents}>{blog.content || ''}</ReactMarkdown>
+        </div>
       </article>
 
       {relatedPosts.length > 0 && (
         <section className="max-w-6xl mx-auto mt-20">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
-            Related Posts
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">Related Posts</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {relatedPosts.map((post) => (
               <BlogCard key={post.id} blog={post} />
@@ -138,16 +152,6 @@ export const BlogDetailPage = ({
           </div>
         </section>
       )}
-
-      <ConfirmModal
-        isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        onConfirm={handleDelete}
-        title="Delete Blog Post"
-        message="Are you sure you want to delete this blog post? This action cannot be undone."
-        confirmText="Delete"
-        isLoading={deleteBlog.isPending}
-      />
     </div>
   )
 }

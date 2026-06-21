@@ -1,7 +1,5 @@
-'use client'
-
-import { CreateBlogPage } from '@/features/blog/pages/CreateBlogPage'
+import { redirect } from 'next/navigation'
 
 export default function Page() {
-  return <CreateBlogPage />
+  redirect('/admin/blog/create')
 }

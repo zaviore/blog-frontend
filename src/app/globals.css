@@ -25,3 +25,81 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .article-editor .mdxeditor {
+    background: transparent;
+  }
+
+  .article-editor .mdxeditor-toolbar {
+    min-height: 44px;
+    gap: 4px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f3f4f6;
+    padding: 6px 10px;
+  }
+
+  .article-editor .mdxeditor-toolbar button {
+    min-height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+    color: #1f2937;
+  }
+
+  .article-editor .mdxeditor-toolbar button:hover,
+  .article-editor .mdxeditor-toolbar button[data-state='on'] {
+    background: #ffffff;
+  }
+
+  .article-editor .mdxeditor-select-content,
+  .article-editor .mdxeditor-select-trigger {
+    border: 0;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #6b7280;
+  }
+
+  .article-editor .mdxeditor-toolbar [role='separator'] {
+    height: 22px;
+    margin: 0 4px;
+    background: #d1d5db;
+  }
+
+  .article-editor .mdxeditor-rich-text-editor,
+  .article-editor .mdxeditor-source-editor,
+  .article-editor .cm-editor {
+    min-height: 400px;
+  }
+
+  .article-editor .cm-editor {
+    background: #ffffff;
+    color: #111827;
+    font-size: 0.95rem;
+  }
+
+  .dark .article-editor .mdxeditor-toolbar {
+    border-bottom-color: #374151;
+    background: #1f2937;
+  }
+
+  .dark .article-editor .mdxeditor-toolbar button {
+    color: #e5e7eb;
+  }
+
+  .dark .article-editor .mdxeditor-toolbar button:hover,
+  .dark .article-editor .mdxeditor-toolbar button[data-state='on'],
+  .dark .article-editor .mdxeditor-select-content,
+  .dark .article-editor .mdxeditor-select-trigger {
+    background: #111827;
+    color: #f9fafb;
+  }
+
+  .dark .article-editor .mdxeditor-toolbar [role='separator'] {
+    background: #4b5563;
+  }
+
+  .dark .article-editor .cm-editor {
+    background: #111827;
+    color: #f9fafb;
+  }
+}

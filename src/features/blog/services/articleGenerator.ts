@@ -11,7 +11,7 @@ export interface GeneratedArticle {
 }
 
 const stripCodeFence = (value: string) =>
-  value.replace(/^```(?:html)?/i, '').replace(/```$/i, '').trim()
+  value.replace(/^```(?:md|markdown)?/i, '').replace(/```$/i, '').trim()
 
 const createExcerpt = (prompt: string, title?: string) => {
   const topic = title?.trim() || prompt.trim()
@@ -28,20 +28,27 @@ const createLocalArticle = ({ prompt, title, category }: GenerateArticleInput): 
     source: 'local',
     excerpt: createExcerpt(prompt, title),
     content: `
-      <h2>Introduction</h2>
-      <p>${topic} is an important topic in ${label.toLowerCase()} because it affects how teams design, build, and maintain software over time.</p>
+## Introduction
 
-      <h3>Core Idea</h3>
-      <p>${prompt.trim()} The main goal is to understand the problem clearly, choose a simple architecture, and keep the implementation easy to evolve.</p>
+${topic} is an important topic in ${label.toLowerCase()} because it affects how teams design, build, and maintain software over time.
 
-      <h3>Implementation Approach</h3>
-      <p>Start by defining the user need, then break the work into small components. Validate the data flow, handle loading and error states, and keep business logic separate from presentation code.</p>
+### Core Idea
 
-      <h3>Best Practices</h3>
-      <p>Prefer readable code, typed data contracts, and focused tests around risky behavior. Avoid adding abstractions too early; let repeated patterns prove that an abstraction is useful.</p>
+${prompt.trim()} The main goal is to understand the problem clearly, choose a simple architecture, and keep the implementation easy to evolve.
 
-      <h3>Conclusion</h3>
-      <p>By approaching ${topic.toLowerCase()} with clear constraints and steady iteration, you can build a solution that is practical today and easier to improve later.</p>
+### Implementation Approach
+
+Start by defining the user need, then break the work into small components. Validate the data flow, handle loading and error states, and keep business logic separate from presentation code.
+
+### Best Practices
+
+- Prefer readable code and typed data contracts.
+- Add focused tests around risky behavior.
+- Avoid abstractions until repeated patterns prove they are useful.
+
+### Conclusion
+
+By approaching ${topic.toLowerCase()} with clear constraints and steady iteration, you can build a solution that is practical today and easier to improve later.
     `.trim()
   }
 }
@@ -57,8 +64,8 @@ export const generateArticle = async (
   }
 
   const instruction = [
-    'Write a blog article in clean semantic HTML.',
-    'Use h2, h3, and p tags only.',
+    'Write a blog article in clean Markdown.',
+    'Use ## headings, ### subheadings, short paragraphs, and bullet lists when useful.',
     'Do not include markdown fences.',
     `Title: ${input.title || input.prompt}`,
     `Category: ${input.category || 'Technology'}`,

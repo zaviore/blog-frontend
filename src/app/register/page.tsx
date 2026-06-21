@@ -1,7 +1,5 @@
-'use client'
-
-import { RegisterPage } from '@/features/auth/pages/RegisterPage'
+import { redirect } from 'next/navigation'
 
 export default function Page() {
-  return <RegisterPage />
+  redirect('/admin/login')
 }

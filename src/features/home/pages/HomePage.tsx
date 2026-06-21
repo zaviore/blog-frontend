@@ -56,16 +56,6 @@ export const HomePage = () => {
         </div>
        </div>
            
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/blog">
-              <Button size="lg">View Blog</Button>
-            </Link>
-            <Link href="/blog/create">
-              <Button variant="outline" size="lg">
-                Write Post
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 

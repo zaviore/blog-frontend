@@ -20,6 +20,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const theme = useAppSelector((state: RootState) => state.theme.mode)
   const user = useAppSelector((state: RootState) => state.auth.user)
   const pathname = usePathname()
+  const isAdminRoute = pathname.startsWith('/admin')
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const handleLogout = () => {
     localStorage.removeItem('user')
     dispatch(logout())
-    router.push('/')
+    router.push('/admin/login')
   }
 
   const navLinks = [
@@ -74,27 +75,20 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </nav>
 
             <div className="flex items-center gap-4">
-              {isMounted && user ? (
+              {isAdminRoute && isMounted && user ? (
                 <div className="flex items-center gap-4">
+                  <Link
+                    href="/admin/blog"
+                    className="text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
+                  >
+                    Admin Blog
+                  </Link>
                   <span className="text-sm text-gray-600 dark:text-gray-400">
                     Hi, {user.name}
                   </span>
                   <Button variant="outline" size="sm" onClick={handleLogout}>
                     Logout
                   </Button>
-                </div>
-              ) : isMounted ? (
-                <div className="flex items-center gap-3">
-                  <Link href="/login">
-                    <Button variant="ghost" size="sm">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link href="/register">
-                    <Button size="sm">
-                      Sign Up
-                    </Button>
-                  </Link>
                 </div>
               ) : null}
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/shared/ui/Card'
 import { Input } from '@/shared/ui/Input'
@@ -34,7 +33,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.replace('/')
+      router.replace('/admin')
     }
   }, [isAuthenticated, router])
 
@@ -99,7 +98,7 @@ export const LoginPage = () => {
       localStorage.setItem('user', JSON.stringify(user))
       dispatch(login(user))
 
-      router.push('/')
+      router.push('/admin')
     } catch (error) {
       setLoginError('Invalid email or password')
     } finally {
@@ -112,10 +111,10 @@ export const LoginPage = () => {
       <Card className="w-full max-w-md p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome Back
+            Admin Login
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Sign in to your account
+            Sign in to manage blog articles
           </p>
         </div>
 
@@ -159,17 +158,9 @@ export const LoginPage = () => {
           </Button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600 dark:text-gray-400">
-            Don't have an account?{' '}
-            <Link 
-              href="/register" 
-              className="text-primary-600 hover:text-primary-700 font-medium"
-            >
-              Sign up
-            </Link>
-          </p>
-        </div>
+        <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+          Dummy admin auth for local blog management.
+        </p>
       </Card>
     </div>
   )

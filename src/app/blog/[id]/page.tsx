@@ -12,27 +12,21 @@ interface PageProps {
 
 export function generateStaticParams() {
   return mockBlogs.map((blog) => ({
-    id: blog.id.toString()
+    id: blog.id.toString(),
   }))
 }
 
 export default function Page({ params }: PageProps) {
   const blogId = Number(params.id)
-  const blog = mockBlogs.find((item) => item.id === blogId)
-
-  if (!blog) {
+  if (!Number.isFinite(blogId)) {
     notFound()
   }
 
+  const blog = mockBlogs.find((item) => item.id === blogId)
+
   const relatedPosts = mockBlogs
-    .filter((item) => item.id !== blog.id && item.category === blog.category)
+    .filter((item) => item.id !== blogId && item.category === blog?.category)
     .slice(0, 3)
 
-  return (
-    <BlogDetailPage
-      blogId={blog.id}
-      initialBlog={blog}
-      initialRelatedPosts={relatedPosts}
-    />
-  )
+  return <BlogDetailPage blogId={blogId} initialBlog={blog} initialRelatedPosts={relatedPosts} />
 }

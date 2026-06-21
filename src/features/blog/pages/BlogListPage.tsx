@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import Link from 'next/link'
 import { Button } from '@/shared/ui/Button'
 import { Input } from '@/shared/ui/Input'
 import { Select } from '@/shared/ui/Select'
@@ -52,9 +51,6 @@ export const BlogListPage = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
             Blog Posts
           </h1>
-          <Link href="/blog/create">
-            <Button>Write Post</Button>
-          </Link>
         </div>
 
         <Card className="p-6 mb-8">

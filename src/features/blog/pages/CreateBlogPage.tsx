@@ -22,7 +22,7 @@ export const CreateBlogPage = () => {
 
   useEffect(() => {
     if (isInitialized && !isAuthenticated) {
-      router.replace('/login')
+      router.replace('/admin/login')
     }
   }, [isAuthenticated, isInitialized, router])
 
@@ -32,7 +32,7 @@ export const CreateBlogPage = () => {
     } else {
       await createBlog.mutateAsync(data)
     }
-    router.push('/blog')
+    router.push('/admin/blog')
   }
 
   if (!isInitialized || !isAuthenticated || (isEdit && isLoadingBlog)) {
