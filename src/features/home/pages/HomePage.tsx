@@ -1,15 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@/shared/ui/Button'
 import { TypingEffect } from '@/shared/components/TypingEffect'
 import { useBlogsInfinite } from '@/features/blog/hooks/useBlogs'
-import { FeaturedArticle } from '../components/FeaturedArticle'
-import { TrendingPosts } from '../components/TrendingPosts'
-import { CategoriesSection } from '../components/CategoriesSection'
 import { FeaturedArticleCard } from '../components/FeaturedArticleCard'
-import { TechStackCarousel } from '../components/TechStackCarousel'
-
 
 const techStack = [
   { name: 'React', icon: '/react.png' },
@@ -19,124 +13,263 @@ const techStack = [
   { name: 'Tailwind CSS', icon: '/tailwind.png' },
   { name: 'Vite', icon: '/vite.png' },
   { name: 'Docker', icon: '/docker.webp' },
-  { name: 'Next', icon: '/vite.png' },
+  { name: 'Next.js', icon: '/vite.png' },
   { name: 'MySQL', icon: '/mysql.png' },
   { name: 'PostgreSQL', icon: '/postgree.png' },
+]
 
+const stats = [
+  { value: '3+', label: 'Years building web products' },
+  { value: '6+', label: 'Production dashboards shipped' },
+  { value: 'AI', label: 'Monitoring and analytics domain' },
+]
+
+const selectedWork = [
+  {
+    title: 'AI CCTV Monitoring Dashboard',
+    description:
+      'Real-time monitoring interface for object detection, face recognition, and operational CCTV workflows.',
+    role: 'Frontend Engineer',
+    stack: ['Next.js', 'TypeScript', 'Tailwind', 'API Integration'],
+  },
+  {
+    title: 'Visitor Management System',
+    description:
+      'Responsive web app for visitor registration, identity workflows, and internal operational reporting.',
+    role: 'Frontend Developer',
+    stack: ['React', 'Material UI', 'SSO', 'Testing'],
+  },
+  {
+    title: 'Customer Analytics Dashboard',
+    description:
+      'Admin dashboard with dynamic charts, filtering, pagination, aggregation, and reusable UI modules.',
+    role: 'Software Engineer',
+    stack: ['Laravel', 'MySQL', 'Bootstrap', 'Docker'],
+  },
+]
+
+const techGroups = [
+  {
+    title: 'Frontend',
+    items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Material UI'],
+  },
+  {
+    title: 'Quality',
+    items: ['Cypress', 'Jest', 'Code Review', 'Reusable Components'],
+  },
+  {
+    title: 'Backend & Tools',
+    items: ['Node.js', 'Laravel', 'MySQL', 'PostgreSQL', 'Docker'],
+  },
 ]
 
 export const HomePage = () => {
-  const { data, isLoading } = useBlogsInfinite({ limit: 4 })
+  const { data, isLoading } = useBlogsInfinite({ limit: 3 })
 
   const featuredBlogs = data?.pages[0]?.data || []
 
   return (
-    <div className="min-h-screen">
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto ">
-        <div className='flex-col md:flex-row flex justify-around items-center text-center md:text-left'> 
-        <img src="/zam-photo.jpeg" alt="Profile" className="w-64 h-64 rounded-full mb-6" />
-        <div className='max-w-2xl'>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Hi, I'm <span className="text-primary-600 dark:text-primary-400">
-              <TypingEffect text="Zamhadi" />
-            </span>
-          </h1>
-          <p className="text-md text-gray-600 dark:text-gray-400 mb-8">
-            i'm Software Engineer, My job is Develop, improve, maintain, and publish high quality
-            user-facing web. To Ensure apps that develop are cross-device compatible, adhere to our
-            company-wide style guide, and matches the designed user experience and Doing test driven
-            development. As a technology enthusiast, I thrive on building dynamic user interfaces
-            and robust frontend architectures. My expertise lies in TypeScript, React, Node.js and
-            Next.js, and I'm always excited to explore new frameworks and design patterns that push
-            the boundaries of web development. I believe in the power of clean, modular code to
-            create scalable and maintainable applications that make a real difference in users'
-            lives.
-          </p>
-        </div>
-       </div>
-           
-        </div>
-      </section>
-
-      <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900/50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-            Tech Stack
-          </h2>
-          <TechStackCarousel techStack={techStack} />
-        </div>
-      </section>
-
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              {isLoading ? (
-                <>
-                  <div className="aspect-video rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="aspect-video rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
-                    <div className="aspect-video rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
-                  </div>
-                </>
-              ) : (
-                <>
-                  {featuredBlogs[0] && <FeaturedArticle blog={featuredBlogs[0]} />}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {featuredBlogs.slice(1, 3).map((blog) => (
-                      <FeaturedArticleCard key={blog.id} blog={blog} />
-                    ))}
-                  </div>
-                </>
-              )}
+    <div className="min-h-screen bg-white dark:bg-gray-950">
+      <section className="px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary-600 dark:text-primary-400">
+              Frontend / Software Engineer
+            </p>
+            <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-950 dark:text-white md:text-6xl">
+              Hi, I'm{' '}
+              <span className="text-primary-600 dark:text-primary-400">
+                <TypingEffect text="Zamhadi" />
+              </span>
+            </h1>
+            <p className="max-w-2xl text-lg leading-8 text-gray-600 dark:text-gray-300">
+              I build scalable dashboards, AI-powered web applications, and maintainable
+              React/Next.js interfaces for complex product workflows.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="#selected-work"
+                className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-3 font-medium text-white transition-colors hover:bg-primary-700"
+              >
+                View My Work
+              </Link>
+              <Link
+                href="/cv"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-800 transition-colors hover:border-primary-500 hover:text-primary-600 dark:border-gray-700 dark:text-gray-100 dark:hover:border-primary-400 dark:hover:text-primary-400"
+              >
+                View CV
+              </Link>
+            
             </div>
+          </div>
 
-            <div className="space-y-6">
-              {!isLoading && <TrendingPosts blogs={featuredBlogs} />}
-              <CategoriesSection />
-            </div>
+          <div className="relative mx-auto w-full max-w-sm">
+            <div className="absolute inset-4 rounded-2xl border border-primary-200 dark:border-primary-900" />
+            <img
+              src="/zam-photo.jpeg"
+              alt="Zamhadi"
+              className="relative aspect-[4/5] w-full rounded-2xl object-cover shadow-xl shadow-gray-200 dark:shadow-black/30"
+            />
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Get in Touch</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
-            Have a project in mind or just want to say hello? I'd love to hear from you!
-          </p>
-          <div className="flex justify-center gap-6">
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+      <section className="border-y border-gray-200 bg-blue-50 px-4 py-8 dark:border-gray-800 dark:bg-gray-900/40">
+        <div className="mx-auto grid max-w-6xl gap-4 sm:grid-cols-3">
+          {stats.map((item) => (
+            <div key={item.label} className="text-center sm:text-left">
+              <p className="text-3xl font-bold text-gray-950 dark:text-white">{item.value}</p>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{item.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="selected-work" className="px-4 py-16 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 max-w-3xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary-600 dark:text-primary-400">
+              Selected Work
+            </p>
+            <h2 className="text-3xl font-bold text-gray-950 dark:text-white md:text-4xl">
+              Product interfaces for real operational problems.
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {selectedWork.map((project) => (
+              <article
+                key={project.title}
+                className="rounded-lg border border-gray-200 bg-white p-6 transition-colors hover:border-primary-300 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-primary-800"
+              >
+                <p className="mb-4 text-sm font-medium text-primary-600 dark:text-primary-400">
+                  {project.role}
+                </p>
+                <h3 className="text-xl font-bold text-gray-950 dark:text-white">{project.title}</h3>
+                <p className="mt-4 leading-7 text-gray-600 dark:text-gray-400">
+                  {project.description}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-600 dark:border-gray-700 dark:text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900/40 md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary-600 dark:text-primary-400">
+              Career Snapshot
+            </p>
+            <h2 className="text-3xl font-bold text-gray-950 dark:text-white md:text-4xl">
+              From dashboards to AI-powered web apps.
+            </h2>
+            <p className="mt-4 leading-7 text-gray-600 dark:text-gray-400">
+              My work spans frontend architecture, API integration, reusable component systems,
+              testing, deployment support, and close collaboration with product, backend, and AI
+              teams.
+            </p>
+            <Link
+              href="/career-journey"
+              className="mt-6 inline-flex items-center rounded-lg bg-gray-950 px-5 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-              </svg>
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              See Full Career Journey
+            </Link>
+          </div>
+
+          <div className="grid gap-4">
+            {techGroups.map((group) => (
+              <div
+                key={group.title}
+                className="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-950"
+              >
+                <h3 className="font-semibold text-gray-950 dark:text-white">{group.title}</h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-gray-200 px-4 py-16 dark:border-gray-800 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary-600 dark:text-primary-400">
+                Latest Writing
+              </p>
+              <h2 className="text-3xl font-bold text-gray-950 dark:text-white md:text-4xl">
+                Notes from building and learning.
+              </h2>
+            </div>
+            <Link
+              href="/blog"
+              className="font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400"
             >
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-              </svg>
-            </a>
+              View all articles
+            </Link>
+          </div>
+
+          {isLoading ? (
+            <div className="grid gap-6 md:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="aspect-video animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-3">
+              {featuredBlogs.map((blog) => (
+                <FeaturedArticleCard key={blog.id} blog={blog} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="bg-gray-950 px-4 py-16 text-white dark:bg-black">
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row md:items-center">
+          <div>
+            <h2 className="text-3xl font-bold">Let's build something useful.</h2>
+            <p className="mt-3 max-w-2xl text-gray-300">
+              Open to frontend engineering roles, product dashboard work, and technical
+              collaboration around React, Next.js, and web application architecture.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
             <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              href="mailto:zamhadi@example.com"
+              className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 font-medium text-gray-950 transition-colors hover:bg-gray-200"
             >
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
+              Email Me
             </a>
+            <Link
+              href="/cv"
+              className="inline-flex items-center justify-center rounded-lg border border-white/30 px-5 py-3 font-medium text-white transition-colors hover:border-white"
+            >
+              View CV
+            </Link>
           </div>
         </div>
       </section>

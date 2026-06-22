@@ -6,8 +6,8 @@ import { Providers } from '@/lib/providers'
 import { MainLayout } from '@/shared/layouts/MainLayout'
 
 export const metadata: Metadata = {
-  title: 'Blog Portfolio',
-  description: 'Personal blog and portfolio website',
+  title: 'Zamhadi - Frontend Engineer',
+  description: 'Portfolio, career journey, CV, and technical writing by Zamhadi.',
 }
 
 export default function RootLayout({
@@ -20,9 +20,7 @@ export default function RootLayout({
       <body>
         <ReduxProvider>
           <Providers>
-            <MainLayout>
-              {children}
-            </MainLayout>
+            <MainLayout>{children}</MainLayout>
           </Providers>
         </ReduxProvider>
       </body>
