@@ -5,7 +5,7 @@ const profile = {
   name: 'Zamhadi',
   role: 'Frontend / Software Engineer',
   location: 'Indonesia',
-  email: 'zamhadi@example.com',
+  email: 'zamhadi21@gmail.com',
   summary:
     'Frontend engineer focused on scalable dashboards, AI-powered web applications, reusable component systems, and maintainable React/Next.js interfaces.',
 }

@@ -28,7 +28,7 @@ export const careerData: CareerExperience[] = [
     company: 'Telkom Indonesia (BigBox)',
     companyLogo: '/image.webp',
     startDate: 'January 2022',
-    endDate: 'Present',
+    endDate: 'December 2025',
     techStack: [
       'ReactJS',
       'NextJS',

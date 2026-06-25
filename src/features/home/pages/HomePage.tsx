@@ -5,18 +5,6 @@ import { TypingEffect } from '@/shared/components/TypingEffect'
 import { useBlogsInfinite } from '@/features/blog/hooks/useBlogs'
 import { FeaturedArticleCard } from '../components/FeaturedArticleCard'
 
-const techStack = [
-  { name: 'React', icon: '/react.png' },
-  { name: 'TypeScript', icon: '/typescript.png' },
-  { name: 'Redux', icon: '/redux.png' },
-  { name: 'TanStack Query', icon: '/tanstack.png' },
-  { name: 'Tailwind CSS', icon: '/tailwind.png' },
-  { name: 'Vite', icon: '/vite.png' },
-  { name: 'Docker', icon: '/docker.webp' },
-  { name: 'Next.js', icon: '/vite.png' },
-  { name: 'MySQL', icon: '/mysql.png' },
-  { name: 'PostgreSQL', icon: '/postgree.png' },
-]
 
 const stats = [
   { value: '3+', label: 'Years building web products' },
@@ -94,7 +82,7 @@ export const HomePage = () => {
                 View My Work
               </Link>
               <Link
-                href="/cv"
+                href="https://drive.google.com/file/d/12MLwQbOy_d7yQvYrghnouGoUuXJL5xsW/view"
                 className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-800 transition-colors hover:border-primary-500 hover:text-primary-600 dark:border-gray-700 dark:text-gray-100 dark:hover:border-primary-400 dark:hover:text-primary-400"
               >
                 View CV
@@ -248,11 +236,11 @@ export const HomePage = () => {
         </div>
       </section>
 
-      <section className="bg-gray-950 px-4 py-16 text-white dark:bg-black">
+      <section className="bg-gray-900 px-4 py-16 text-white dark:bg-black">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
             <h2 className="text-3xl font-bold">Let's build something useful.</h2>
-            <p className="mt-3 max-w-2xl text-gray-300">
+            <p className="mt-3 max-w-2xl text-white">
               Open to frontend engineering roles, product dashboard work, and technical
               collaboration around React, Next.js, and web application architecture.
             </p>
@@ -264,12 +252,7 @@ export const HomePage = () => {
             >
               Email Me
             </a>
-            <Link
-              href="/cv"
-              className="inline-flex items-center justify-center rounded-lg border border-white/30 px-5 py-3 font-medium text-white transition-colors hover:border-white"
-            >
-              View CV
-            </Link>
+           
           </div>
         </div>
       </section>
