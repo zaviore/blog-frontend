@@ -247,7 +247,7 @@ export const HomePage = () => {
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             <a
-              href="mailto:zamhadi@example.com"
+              href="mailto:zamhadi21@gmail.com"
               className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 font-medium text-gray-950 transition-colors hover:bg-gray-200"
             >
               Email Me
